@@ -28,3 +28,20 @@ void ll_push_back(LL_Node * head, LL_Node * new_node)
   __ll_push_between(head->prev, head, new_node);
 }
 
+void ll_push_front(LL_Node * head, LL_Node * new_node)
+{
+  __ll_push_between(head, head->next, new_node);
+}
+
+void __ll_re_link(LL_Node * prev, LL_Node * next)
+{
+  prev->next = next;
+  next->prev = prev;
+}
+
+void ll_delete(LL_Node * node)
+{
+  __ll_re_link(node->prev, node->next);
+  node->next = NULL;
+  node->prev = NULL;
+}
