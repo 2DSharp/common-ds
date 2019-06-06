@@ -39,9 +39,21 @@ void __ll_re_link(LL_Node * prev, LL_Node * next)
   next->prev = prev;
 }
 
+void __ll_nullify(LL_Node * node)
+{
+  node->next = NULL;
+  node->prev = NULL;
+}
 void ll_delete(LL_Node * node)
 {
   __ll_re_link(node->prev, node->next);
-  node->next = NULL;
-  node->prev = NULL;
+  __ll_nullify(node);
+}
+
+void ll_replace(LL_Node * old, LL_Node * new)
+{
+  __ll_re_link(old->prev, new);
+  __ll_re_link(new, old->next);
+
+  __ll_nullify(old);
 }
