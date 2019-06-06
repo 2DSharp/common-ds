@@ -13,8 +13,9 @@ typedef struct ll_node_t
 } LL_Node;
 
 void ll_push_back(LL_Node * head, LL_Node * new_node);
+void ll_push_front(LL_Node * head, LL_Node * new_node);
 void ll_delete(LL_Node * node);
-void ll_flush_list(LL_Node * head);
+void ll_replace(LL_Node * old, LL_Node * new);
 void ll_create_list(LL_Node * new_head_ptr);
 
 /*
@@ -22,7 +23,7 @@ void ll_create_list(LL_Node * new_head_ptr);
  * A neat trick that gets the address of the struct housing the \
  * LL_Node
  */
-#define ll_get(node, struct_type, struct_member) \
+#define ll_get(node, struct_type, struct_member)			\
   ((struct_type *)((char *)(node) - (unsigned long)(offsetof(struct_type, struct_member))))
 
 /*
@@ -30,20 +31,20 @@ void ll_create_list(LL_Node * new_head_ptr);
  */
 #define ll_foreach(ptr, head)			\
   for (ptr = (head)->next; ptr != head;		\
-	 ptr = ptr->next)
+       ptr = ptr->next)
 
 /*
  * Iterate backwards
  */
-#define ll_foreach_back(ptr, head)			\
-  for (ptr = (head)->prev; ptr != head;			\
-	 ptr = ptr->prev)
+#define ll_foreach_back(ptr, head)		\
+  for (ptr = (head)->prev; ptr != head;		\
+       ptr = ptr->prev)
 /*
  * Iterate over each item safely 
  * Allows for freeing of objects without any errors
  */
-#define ll_foreach_safe(ptr, temp, head)		  \
-  for (ptr = (head)->next, temp = ptr->next; ptr != head; \
+#define ll_foreach_safe(ptr, temp, head)			\
+  for (ptr = (head)->next, temp = ptr->next; ptr != head;	\
        ptr = temp, temp = ptr->next)
 
 #endif
