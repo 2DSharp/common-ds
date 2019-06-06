@@ -1,0 +1,87 @@
+#include "hashtable.h"
+#include <stdio.h>
+
+unsigned long __hash_sdbm(char *str)
+{
+  unsigned long hash = 0;
+  int c;
+  
+  while ((c = *str++))
+    hash = c + (hash << 6) + (hash << 16) - hash;
+  
+  return hash;
+}
+int __key_matches(char * source, char * target)
+{
+  return (strcmp(source, target) == 0);
+}
+
+void __insert_bucket(int index, Bucket * bucket)
+{
+  if (__hashtable[index] == NULL) {
+    
+    LL_Node * head = &bucket->ll_node;  
+    ll_create_list(head);
+    __hashtable[index] = bucket;
+  }
+  else {
+
+    LL_Node * head = &(__hashtable[index]->ll_node);
+    LL_Node * ptr = head;
+    int head_key_matches = (__key_matches(bucket->key, __hashtable[index]->key));
+    
+    Bucket * search_bucket;
+    
+    ll_foreach(ptr, head) { 
+      search_bucket = ll_get(ptr, Bucket, ll_node); 
+      if (head_key_matches || __key_matches(bucket->key, search_bucket->key)) { 
+     	ll_replace(ptr, &bucket->ll_node); 
+	return; 
+      }     
+    }
+    ll_push_front(head, &(bucket->ll_node));
+  }
+}
+    
+  /* else { */
+  /*   Bucket * search_bucket = hashtable_get_bucket(bucket->key); */
+  /*   if (search_bucket == NULL) */
+  /*     ll_push_back(&(__hashtable[index]->ll_node), &(bucket->ll_node)); */
+  /*   else { */
+  /*     // replace bucket */
+  /*     __replace_bucket(search_bucket, bucket); */
+  /*   } */
+  /* } */
+
+void hashtable_put(char * key, Bucket * bucket)
+{
+  int index = __hash_sdbm(key) % HT_MAGIC_SIZE;
+  bucket->key = key;
+  __insert_bucket(index, bucket);
+}
+
+Bucket * hashtable_get_bucket(char * key)
+{
+  int index = __hash_sdbm(key) % HT_MAGIC_SIZE;  
+
+  if (__hashtable[index] == NULL)
+    return NULL;
+
+  Bucket * bucket = __hashtable[index];
+  
+  if (__key_matches(bucket->key, key))
+    return bucket;
+
+  else {
+    LL_Node * ptr;
+    LL_Node * head = &(__hashtable[index]->ll_node);
+  
+    ll_foreach(ptr, head) {
+      bucket = ll_get(ptr, Bucket, ll_node);
+      if (__key_matches(key, bucket->key)) {
+	return bucket;
+      }
+    }
+    return NULL;
+  }
+}
