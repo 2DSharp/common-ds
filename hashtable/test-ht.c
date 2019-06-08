@@ -54,9 +54,14 @@ int main()
   res = hashtable_get(ht, "tran", Entry, bucket);
   printf("%d\n", res->val);
   
-  res = hashtable_get(ht, "trans", Entry, bucket);
-  if (res == NULL) {
+  if (hashtable_key_exists(ht, "trans"))
     printf("Doesn't exist");
-  }
-  else printf("%d\n", res->val);  
+  else
+    printf("Exists");
+
+  if (hashtable_key_exists(ht, "tran"))
+    printf("Doesn't exist");
+  else
+    printf("Exists");
+
 }

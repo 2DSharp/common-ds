@@ -23,9 +23,10 @@ typedef struct hashtable
 
 void hashtable_init(Hashtable * hashtable, int size);
 void hashtable_put(Hashtable * hashtable, char * key, Bucket * bucket);
-
+int hashtable_key_exists(Hashtable * hashtable, char * key);
 #define hashtable_get_value(bucket, struct_type, struct_member)		\
   ((struct_type *)((char *)(bucket) - (unsigned long)(offsetof(struct_type, struct_member))))
+
 Bucket * hashtable_get_bucket(Hashtable * hashtable, char * key);
 
 #define hashtable_get(hashtable, key, struct_type, struct_member)	\

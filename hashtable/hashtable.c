@@ -78,8 +78,9 @@ Bucket * hashtable_get_bucket(Hashtable * hashtable, char * key)
 
   Bucket * bucket = hashtable->buckets[index];
   
-  if (__key_matches(bucket->key, key))
+  if (__key_matches(bucket->key, key)) {
     return bucket;
+  }
 
   else {
     LL_Node * ptr;
@@ -93,4 +94,9 @@ Bucket * hashtable_get_bucket(Hashtable * hashtable, char * key)
     }
     return NULL;
   }
+}
+
+int hashtable_key_exists(Hashtable * ht, char * key)
+{
+  return (hashtable_get_bucket(ht, key) == NULL);
 }
