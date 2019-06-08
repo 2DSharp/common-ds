@@ -1,5 +1,13 @@
 #include "hashtable.h"
-#include <stdio.h>
+
+void hashtable_init(Hashtable * ht, int size)
+{
+  ht->buckets = (Bucket **) malloc (sizeof(Bucket *) * size);
+  ht->size = size;
+  
+  for (int i = 0; i < size; i++)
+    ht->buckets[i] = NULL;
+}
 
 unsigned long __hash_sdbm(char *str)
 {
@@ -16,19 +24,20 @@ int __key_matches(char * source, char * target)
   return (strcmp(source, target) == 0);
 }
 
-void __insert_bucket(int index, Bucket * bucket)
+void __insert_bucket(Hashtable * hashtable, int index, Bucket * bucket)
 {
-  if (__hashtable[index] == NULL) {
+  if (hashtable->buckets[index] == NULL) {
     
     LL_Node * head = &bucket->ll_node;  
     ll_create_list(head);
-    __hashtable[index] = bucket;
+    hashtable->buckets[index] = bucket;
   }
   else {
 
-    LL_Node * head = &(__hashtable[index]->ll_node);
+    LL_Node * head = &(hashtable->buckets[index]->ll_node);
     LL_Node * ptr = head;
-    int head_key_matches = (__key_matches(bucket->key, __hashtable[index]->key));
+    int head_key_matches = (__key_matches(bucket->key,
+					  hashtable->buckets[index]->key));
     
     Bucket * search_bucket;
     
@@ -53,28 +62,28 @@ void __insert_bucket(int index, Bucket * bucket)
   /*   } */
   /* } */
 
-void hashtable_put(char * key, Bucket * bucket)
+void hashtable_put(Hashtable * ht, char * key, Bucket * bucket)
 {
-  int index = __hash_sdbm(key) % HT_MAGIC_SIZE;
+  int index = __hash_sdbm(key) % ht->size;
   bucket->key = key;
-  __insert_bucket(index, bucket);
+  __insert_bucket(ht, index, bucket);
 }
 
-Bucket * hashtable_get_bucket(char * key)
+Bucket * hashtable_get_bucket(Hashtable * hashtable, char * key)
 {
-  int index = __hash_sdbm(key) % HT_MAGIC_SIZE;  
+  int index = __hash_sdbm(key) % hashtable->size;  
 
-  if (__hashtable[index] == NULL)
+  if (hashtable->buckets[index] == NULL)
     return NULL;
 
-  Bucket * bucket = __hashtable[index];
+  Bucket * bucket = hashtable->buckets[index];
   
   if (__key_matches(bucket->key, key))
     return bucket;
 
   else {
     LL_Node * ptr;
-    LL_Node * head = &(__hashtable[index]->ll_node);
+    LL_Node * head = &(hashtable->buckets[index]->ll_node);
   
     ll_foreach(ptr, head) {
       bucket = ll_get(ptr, Bucket, ll_node);
