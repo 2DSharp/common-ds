@@ -100,3 +100,9 @@ int hashtable_key_exists(Hashtable * ht, char * key)
 {
   return (hashtable_get_bucket(ht, key) == NULL);
 }
+
+void hashtable_close(Hashtable *ht)
+{
+  free(ht->buckets);
+  ht->size = 0;
+}

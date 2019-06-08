@@ -64,4 +64,10 @@ int main()
   else
     printf("Exists");
 
+  free(entry);
+  free(entry3);
+  free(entry2);
+  free(entry4);
+
+  hashtable_close(ht);
 }
