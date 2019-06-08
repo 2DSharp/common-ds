@@ -1,12 +1,15 @@
 #include "hashtable.h"
 
-void hashtable_init(Hashtable * ht, int size)
+int hashtable_init(Hashtable * ht, int size)
 {
-  ht->buckets = (Bucket **) malloc (sizeof(Bucket *) * size);
+  if ((ht->buckets = (Bucket **) malloc (sizeof(Bucket *) * size)) == NULL)
+    return HT_INIT_FAILURE;
   ht->size = size;
   
   for (int i = 0; i < size; i++)
     ht->buckets[i] = NULL;
+
+  return HT_INIT_SUCCESS;
 }
 
 unsigned long __hash_sdbm(char *str)

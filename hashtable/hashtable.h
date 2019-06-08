@@ -6,6 +6,9 @@
 #include <string.h>
 #include <stddef.h>
 
+#define HT_INIT_FAILURE -1
+#define HT_INIT_SUCCESS 0
+
 #define HT_MAGIC_SIZE 997
 
 typedef struct bucket
@@ -21,7 +24,7 @@ typedef struct hashtable
 } Hashtable;
   
 
-void hashtable_init(Hashtable * hashtable, int size);
+int hashtable_init(Hashtable * hashtable, int size);
 void hashtable_put(Hashtable * hashtable, char * key, Bucket * bucket);
 int hashtable_key_exists(Hashtable * hashtable, char * key);
 void hashtable_close(Hashtable * hashtable);

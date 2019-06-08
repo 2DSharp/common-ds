@@ -12,7 +12,8 @@ int main()
   Hashtable hashtable;
   Hashtable * ht = &hashtable;
   
-  hashtable_init(ht, 10);
+  if (hashtable_init(ht, 10) == HT_INIT_FAILURE)
+    return EXIT_FAILURE;
   
   Entry * entry = (Entry *) malloc(sizeof(Entry));
   entry->val = 10;
@@ -70,4 +71,6 @@ int main()
   free(entry4);
 
   hashtable_close(ht);
+
+  return EXIT_SUCCESS;
 }
