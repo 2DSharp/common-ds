@@ -7,9 +7,9 @@
  */
 #include <stddef.h>
 
-typedef struct ll_node_t 
+typedef struct ll_node 
 {
-  struct ll_node_t * next, * prev;
+  struct ll_node * next, * prev;
 } LL_Node;
 
 void ll_push_back(LL_Node * head, LL_Node * new_node);
