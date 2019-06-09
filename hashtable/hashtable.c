@@ -72,7 +72,7 @@ void hashtable_put(Hashtable * ht, char * key, Bucket * bucket)
   __insert_bucket(ht, index, bucket);
 }
 
-Bucket * hashtable_get_bucket(Hashtable * hashtable, char * key)
+Bucket * __hashtable_get_bucket(Hashtable * hashtable, char * key)
 {
   int index = __hash_sdbm(key) % hashtable->size;  
 
@@ -101,7 +101,7 @@ Bucket * hashtable_get_bucket(Hashtable * hashtable, char * key)
 
 int hashtable_key_exists(Hashtable * ht, char * key)
 {
-  return (hashtable_get_bucket(ht, key) == NULL);
+  return (__hashtable_get_bucket(ht, key) == NULL);
 }
 
 void hashtable_close(Hashtable *ht)
