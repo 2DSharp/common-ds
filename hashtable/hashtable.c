@@ -2,7 +2,7 @@
 
 int hashtable_init(Hashtable * ht, int size)
 {
-  if ((ht->buckets = (Bucket **) malloc (sizeof(Bucket *) * size)) == NULL)
+  if ((ht->buckets = (Bucket **) calloc (size, sizeof(Bucket *))) == NULL)
     return HT_INIT_FAILURE;
   ht->size = size;
   
