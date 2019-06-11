@@ -10,7 +10,7 @@ void ll_create_list(LL_Node * new_head_ptr)
   new_head_ptr->prev = new_head_ptr;
 }
 
-void __ll_push_between(LL_Node * prev, LL_Node * next, LL_Node * new)
+static void __ll_push_between(LL_Node * prev, LL_Node * next, LL_Node * new)
 {
   prev->next = new;
   new->prev = prev;
@@ -33,13 +33,13 @@ void ll_push_front(LL_Node * head, LL_Node * new_node)
   __ll_push_between(head, head->next, new_node);
 }
 
-void __ll_re_link(LL_Node * prev, LL_Node * next)
+static void __ll_re_link(LL_Node * prev, LL_Node * next)
 {
   prev->next = next;
   next->prev = prev;
 }
 
-void __ll_nullify(LL_Node * node)
+static void __ll_nullify(LL_Node * node)
 {
   node->next = NULL;
   node->prev = NULL;

@@ -12,7 +12,7 @@ int hashtable_init(Hashtable * ht, int size)
   return HT_INIT_SUCCESS;
 }
 
-unsigned long __hash_sdbm(char *str)
+static unsigned long __hash_sdbm(char *str)
 {
   unsigned long hash = 0;
   int c;
@@ -22,12 +22,12 @@ unsigned long __hash_sdbm(char *str)
   
   return hash;
 }
-int __key_matches(char * source, char * target)
+static int __key_matches(char * source, char * target)
 {
   return (strcmp(source, target) == 0);
 }
 
-void __insert_bucket(Hashtable * hashtable, int index, Bucket * bucket)
+static void __insert_bucket(Hashtable * hashtable, int index, Bucket * bucket)
 {
   if (hashtable->buckets[index] == NULL) {
     
